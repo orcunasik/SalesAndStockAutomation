@@ -1,0 +1,81 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackEnd", "BackEnd", "{A85C60EA-F790-45E2-9512-48369B351EE7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesAndStockAutomation.Base", "BackEnd\SalesAndStockAutomation.Base\SalesAndStockAutomation.Base.csproj", "{905157D1-995D-44FF-BFD2-5B5E2C359A1A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesAndStockAutomation.Entities", "BackEnd\SalesAndStockAutomation.Entities\SalesAndStockAutomation.Entities.csproj", "{842E0ED5-37EC-4800-972E-EFF3BA507B0D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesAndStockAutomation.Repositories", "BackEnd\SalesAndStockAutomation.Repositories\SalesAndStockAutomation.Repositories.csproj", "{7E7D4435-E750-4B9D-9C37-318A7CFAE32B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesAndStockAutomation.Services", "BackEnd\SalesAndStockAutomation.Services\SalesAndStockAutomation.Services.csproj", "{4B0907AC-1B7C-4860-B99B-8E29F54E33E5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesAndStockAutomation.WebApi", "BackEnd\SalesAndStockAutomation.WebApi\SalesAndStockAutomation.WebApi.csproj", "{AEB36ED1-9144-4D11-9807-FB624AAD0EC6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{DF804E93-8A5C-4874-B3CD-AD82C92462B2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesAndStockAutomation.BlazorUI", "FrontEnd\SalesAndStockAutomation.BlazorUI\SalesAndStockAutomation.BlazorUI.csproj", "{7BA21AB9-66DA-415B-AC8B-CAA99218C23C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesAndStockAutomation.Models", "FrontEnd\SalesAndStockAutomation.Models\SalesAndStockAutomation.Models.csproj", "{802C063C-A7FA-4CD6-8E0C-09CAB23150EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesAndStockAutomation.Services", "FrontEnd\SalesAndStockAutomation.Services\SalesAndStockAutomation.Services.csproj", "{24F8B511-6D05-4303-86FC-550E6CDD882D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{905157D1-995D-44FF-BFD2-5B5E2C359A1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{905157D1-995D-44FF-BFD2-5B5E2C359A1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{905157D1-995D-44FF-BFD2-5B5E2C359A1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{905157D1-995D-44FF-BFD2-5B5E2C359A1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{842E0ED5-37EC-4800-972E-EFF3BA507B0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{842E0ED5-37EC-4800-972E-EFF3BA507B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{842E0ED5-37EC-4800-972E-EFF3BA507B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{842E0ED5-37EC-4800-972E-EFF3BA507B0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E7D4435-E750-4B9D-9C37-318A7CFAE32B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E7D4435-E750-4B9D-9C37-318A7CFAE32B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E7D4435-E750-4B9D-9C37-318A7CFAE32B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E7D4435-E750-4B9D-9C37-318A7CFAE32B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B0907AC-1B7C-4860-B99B-8E29F54E33E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B0907AC-1B7C-4860-B99B-8E29F54E33E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B0907AC-1B7C-4860-B99B-8E29F54E33E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B0907AC-1B7C-4860-B99B-8E29F54E33E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEB36ED1-9144-4D11-9807-FB624AAD0EC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEB36ED1-9144-4D11-9807-FB624AAD0EC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEB36ED1-9144-4D11-9807-FB624AAD0EC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEB36ED1-9144-4D11-9807-FB624AAD0EC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BA21AB9-66DA-415B-AC8B-CAA99218C23C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BA21AB9-66DA-415B-AC8B-CAA99218C23C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BA21AB9-66DA-415B-AC8B-CAA99218C23C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BA21AB9-66DA-415B-AC8B-CAA99218C23C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{802C063C-A7FA-4CD6-8E0C-09CAB23150EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{802C063C-A7FA-4CD6-8E0C-09CAB23150EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{802C063C-A7FA-4CD6-8E0C-09CAB23150EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{802C063C-A7FA-4CD6-8E0C-09CAB23150EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24F8B511-6D05-4303-86FC-550E6CDD882D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24F8B511-6D05-4303-86FC-550E6CDD882D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24F8B511-6D05-4303-86FC-550E6CDD882D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24F8B511-6D05-4303-86FC-550E6CDD882D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{905157D1-995D-44FF-BFD2-5B5E2C359A1A} = {A85C60EA-F790-45E2-9512-48369B351EE7}
+		{842E0ED5-37EC-4800-972E-EFF3BA507B0D} = {A85C60EA-F790-45E2-9512-48369B351EE7}
+		{7E7D4435-E750-4B9D-9C37-318A7CFAE32B} = {A85C60EA-F790-45E2-9512-48369B351EE7}
+		{4B0907AC-1B7C-4860-B99B-8E29F54E33E5} = {A85C60EA-F790-45E2-9512-48369B351EE7}
+		{AEB36ED1-9144-4D11-9807-FB624AAD0EC6} = {A85C60EA-F790-45E2-9512-48369B351EE7}
+		{7BA21AB9-66DA-415B-AC8B-CAA99218C23C} = {DF804E93-8A5C-4874-B3CD-AD82C92462B2}
+		{802C063C-A7FA-4CD6-8E0C-09CAB23150EC} = {DF804E93-8A5C-4874-B3CD-AD82C92462B2}
+		{24F8B511-6D05-4303-86FC-550E6CDD882D} = {DF804E93-8A5C-4874-B3CD-AD82C92462B2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {85280718-C800-4075-97F8-E13548CFB5A0}
+	EndGlobalSection
+EndGlobal
