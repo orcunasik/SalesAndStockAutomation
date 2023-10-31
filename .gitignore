@@ -364,3 +364,4 @@ FodyWeavers.xsd
 /BackEnd/SalesAndStockAutomation.WebApi/appsettings.json
 /BackEnd/SalesAndStockAutomation.WebApi/Properties/launchSettings.json
 /FrontEnd/SalesAndStockAutomation.BlazorUI/Properties/launchSettings.json
+/FrontEnd/SalesAndStockAutomation.BlazorUI/wwwroot/appsettings.json
