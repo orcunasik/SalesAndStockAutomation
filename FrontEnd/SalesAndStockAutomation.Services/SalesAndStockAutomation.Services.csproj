@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SalesAndStockAutomation.Configurations\SalesAndStockAutomation.Configurations.csproj" />
+    <ProjectReference Include="..\SalesAndStockAutomation.Models\SalesAndStockAutomation.Models.csproj" />
+  </ItemGroup>
+
 </Project>
