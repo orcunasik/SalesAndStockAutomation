@@ -1,32 +1,46 @@
-﻿using SalesAndStockAutomation.Models.Entities;
+﻿using SalesAndStockAutomation.Configurations;
+using SalesAndStockAutomation.Models.Entities;
 using SalesAndStockAutomation.Services.Abstracts;
+using System.Net.Http.Json;
 
 namespace SalesAndStockAutomation.Services.Concretes;
 
 public class AuthorityService : IAuthorityService
 {
-    public Task<Authority> AddAsync(Authority entity)
+    private IDomainService _domainService;
+    private HttpClient _httpClient;
+
+    public AuthorityService(IDomainService domainService, HttpClient httpClient)
     {
-        throw new NotImplementedException();
+        _domainService = domainService;
+        _httpClient = httpClient;
+    }
+    public async Task<Authority> AddAsync(Authority entity)
+    {
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_domainService.Domain() + "api/Authorities/", entity);
+        return await response.Content.ReadFromJsonAsync<Authority>();
     }
 
-    public void Delete(Authority entity)
+    public async void Delete(int id)
     {
-        throw new NotImplementedException();
+        await _httpClient.DeleteAsync(_domainService.Domain() + $"api/Authorities/{id}");
     }
 
-    public Task<List<Authority>> GetAllAsync()
+    public async Task<List<Authority>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        List<Authority>? response = await _httpClient.GetFromJsonAsync<List<Authority>>(_domainService.Domain() + "api/Authorities/");
+        return response;
     }
 
-    public Task<Authority> GetAuthorityAsync(int id)
+    public async Task<Authority> GetAuthorityAsync(int id)
     {
-        throw new NotImplementedException();
+        Authority? response = await _httpClient.GetFromJsonAsync<Authority>(_domainService.Domain() + "api/Authorities/");
+        return response;
     }
 
-    public Task<Authority> UpdateAsync(Authority entity)
+    public async Task<Authority> UpdateAsync(Authority entity)
     {
-        throw new NotImplementedException();
+        HttpResponseMessage response = await _httpClient.PutAsJsonAsync(_domainService.Domain() + "api/Authorities/", entity);
+        return await response.Content.ReadFromJsonAsync<Authority>();
     }
 }

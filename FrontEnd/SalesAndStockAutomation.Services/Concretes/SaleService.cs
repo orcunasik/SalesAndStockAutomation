@@ -1,37 +1,53 @@
-﻿using SalesAndStockAutomation.Models.Entities;
+﻿using SalesAndStockAutomation.Configurations;
+using SalesAndStockAutomation.Models.Entities;
 using SalesAndStockAutomation.Services.Abstracts;
+using System.Net.Http.Json;
 
 namespace SalesAndStockAutomation.Services.Concretes;
 
 public class SaleService : ISaleService
 {
-    public Task<Sale> AddAsync(Sale entity)
+    private IDomainService _domainService;
+    private HttpClient _httpClient;
+
+    public SaleService(IDomainService domainService, HttpClient httpClient)
     {
-        throw new NotImplementedException();
+        _domainService = domainService;
+        _httpClient = httpClient;
     }
 
-    public void Delete(Sale entity)
+    public async Task<Sale> AddAsync(Sale entity)
     {
-        throw new NotImplementedException();
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_domainService.Domain() + "api/Sales/", entity);
+        return await response.Content.ReadFromJsonAsync<Sale>();
     }
 
-    public Task<List<Sale>> GetAllAsync()
+    public async void Delete(int id)
     {
-        throw new NotImplementedException();
+        await _httpClient.DeleteAsync(_domainService.Domain() + $"api/Sales/{id}");
     }
 
-    public Task<Sale> GetByIdAsync(int id)
+    public async Task<List<Sale>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        List<Sale>? response = await _httpClient.GetFromJsonAsync<List<Sale>>(_domainService.Domain() + "api/Sales/");
+        return response;
     }
 
-    public Task<List<Sale>> PagingAsync(int skip, int take)
+    public async Task<Sale> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        Sale? response = await _httpClient.GetFromJsonAsync<Sale>(_domainService.Domain() + $"api/Sales/{id}");
+        return response;
     }
 
-    public Task<Sale> UpdateAsync(Sale entity)
+    public async Task<List<Sale>> PagingAsync(int skip, int take)
     {
-        throw new NotImplementedException();
+        List<Sale>? response = await _httpClient.GetFromJsonAsync<List<Sale>>(_domainService.Domain() + $"api/Sales/{skip}/{take}");
+        return response;
+    }
+
+    public async Task<Sale> UpdateAsync(Sale entity)
+    {
+        HttpResponseMessage? response = await _httpClient.PutAsJsonAsync(_domainService.Domain() + "api/Sales/", entity);
+        return await response.Content.ReadFromJsonAsync<Sale>();
     }
 }

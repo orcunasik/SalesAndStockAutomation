@@ -1,37 +1,53 @@
-﻿using SalesAndStockAutomation.Models.Entities;
+﻿using SalesAndStockAutomation.Configurations;
+using SalesAndStockAutomation.Models.Entities;
 using SalesAndStockAutomation.Services.Abstracts;
+using System.Net.Http.Json;
 
 namespace SalesAndStockAutomation.Services.Concretes;
 
 public class UserAuthorityService : IUserAuthorityService
 {
-    public Task<UserAuthority> AddAsync(UserAuthority entity)
+    private IDomainService _domainService;
+    private HttpClient _httpClient;
+
+    public UserAuthorityService(IDomainService domainService, HttpClient httpClient)
     {
-        throw new NotImplementedException();
+        _domainService = domainService;
+        _httpClient = httpClient;
     }
 
-    public void Delete(UserAuthority entity)
+    public async Task<UserAuthority> AddAsync(UserAuthority entity)
     {
-        throw new NotImplementedException();
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_domainService.Domain() + "api/UserAuthorities/", entity);
+        return await response.Content.ReadFromJsonAsync<UserAuthority>();
     }
 
-    public Task<List<UserAuthority>> GetAllAsync()
+    public async void Delete(int id)
     {
-        throw new NotImplementedException();
+        await _httpClient.DeleteAsync(_domainService.Domain() + $"api/UserAuthorities/{id}");
     }
 
-    public Task<UserAuthority> GetByIdAsync(int id)
+    public async Task<List<UserAuthority>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        List<UserAuthority>? response = await _httpClient.GetFromJsonAsync<List<UserAuthority>>(_domainService.Domain() + "api/UserAuthorities/");
+        return response;
     }
 
-    public Task<List<Employee>> GetEmployeesByAuthorityIdAsync(int authorityId, int skip, int take)
+    public async Task<UserAuthority> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        UserAuthority? response = await _httpClient.GetFromJsonAsync<UserAuthority>(_domainService.Domain() + $"api/UserAuthorities/{id}");
+        return response;
     }
 
-    public Task<UserAuthority> UpdateAsync(UserAuthority entity)
+    public async Task<List<Employee>> GetEmployeesByAuthorityIdAsync(int authorityId,  int skip, int take)
     {
-        throw new NotImplementedException();
+        List<Employee>? response = await _httpClient.GetFromJsonAsync<List<Employee>>(_domainService.Domain() + $"api/UserAuthorities/{authorityId}/{skip}/{take}");
+        return response;
+    }
+
+    public async Task<UserAuthority> UpdateAsync(UserAuthority entity)
+    {
+        HttpResponseMessage? response = await _httpClient.PutAsJsonAsync(_domainService.Domain() + "api/UserAuthorities/", entity);
+        return await response.Content.ReadFromJsonAsync<UserAuthority>();
     }
 }

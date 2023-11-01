@@ -1,42 +1,60 @@
-﻿using SalesAndStockAutomation.Models.Entities;
+﻿using SalesAndStockAutomation.Configurations;
+using SalesAndStockAutomation.Models.Entities;
 using SalesAndStockAutomation.Services.Abstracts;
+using System.Net.Http.Json;
 
 namespace SalesAndStockAutomation.Services.Concretes;
 
 public class CityService : ICityService
 {
-    public Task<City> AddAsync(City entity)
+    private IDomainService _domainService;
+    private HttpClient _httpClient;
+
+    public CityService(IDomainService domainService, HttpClient httpClient)
     {
-        throw new NotImplementedException();
+        _domainService = domainService;
+        _httpClient = httpClient;
+    }
+    public async Task<City> AddAsync(City entity)
+    {
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_domainService.Domain() + "api/Cities/", entity);
+        return await response.Content.ReadFromJsonAsync<City>();
     }
 
-    public void Delete(City entity)
+    public async void Delete(int id)
     {
-        throw new NotImplementedException();
+        await _httpClient.DeleteAsync(_domainService.Domain() + $"api/Cities/{id}");
     }
 
-    public Task<List<City>> GetAllAsync()
+    public async Task<List<City>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        List<City>? response = await _httpClient.GetFromJsonAsync<List<City>>(_domainService.Domain() + "api/Cities/");
+        return response;
     }
 
-    public Task<City> GetByIdAsync(int id)
+    public async Task<City> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        City? response = await _httpClient.GetFromJsonAsync<City>(_domainService.Domain() + $"api/Cities/{id}");
+        return response;
     }
 
-    public Task<List<City>> GetCityByParentAsync(int parentId, int skip, int take)
+    public async Task<List<City>> GetCityByParentAsync(int parentId, int skip, int take)
     {
-        throw new NotImplementedException();
+        List<City>? response = await _httpClient.GetFromJsonAsync<List<City>>(_domainService.Domain() + $"api/Cities/{parentId}/{skip}/{take}");
+        return response;
     }
 
-    public void MultiDelete(List<City> entities)
+    public async void MultiDelete(List<City> entities)
     {
-        throw new NotImplementedException();
+        foreach (City city in entities)
+        {
+            await _httpClient.DeleteAsync(_domainService.Domain() + $"api/Cities/{city.Id}");
+        }
     }
 
-    public Task<City> UpdateAsync(City entity)
+    public async Task<City> UpdateAsync(City entity)
     {
-        throw new NotImplementedException();
+        HttpResponseMessage? response = await _httpClient.PutAsJsonAsync(_domainService.Domain() + "api/Cities/", entity);
+        return await response.Content.ReadFromJsonAsync<City>();
     }
 }

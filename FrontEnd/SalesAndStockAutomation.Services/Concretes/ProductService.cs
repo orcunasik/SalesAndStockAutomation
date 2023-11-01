@@ -1,37 +1,53 @@
-﻿using SalesAndStockAutomation.Models.Entities;
+﻿using SalesAndStockAutomation.Configurations;
+using SalesAndStockAutomation.Models.Entities;
 using SalesAndStockAutomation.Services.Abstracts;
+using System.Net.Http.Json;
 
 namespace SalesAndStockAutomation.Services.Concretes;
 
 public class ProductService : IProductService
 {
-    public Task<Product> AddAsync(Product entity)
+    private IDomainService _domainService;
+    private HttpClient _httpClient;
+
+    public ProductService(IDomainService domainService, HttpClient httpClient)
     {
-        throw new NotImplementedException();
+        _domainService = domainService;
+        _httpClient = httpClient;
     }
 
-    public void Delete(Product entity)
+    public async Task<Product> AddAsync(Product entity)
     {
-        throw new NotImplementedException();
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_domainService.Domain() + "api/Products/", entity);
+        return await response.Content.ReadFromJsonAsync<Product>();
     }
 
-    public Task<List<Product>> GetAllAsync()
+    public async void Delete(int id)
     {
-        throw new NotImplementedException();
+        await _httpClient.DeleteAsync(_domainService.Domain() + $"api/Products/{id}");
     }
 
-    public Task<Product> GetByIdAsync(int id)
+    public async Task<List<Product>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        List<Product>? response = await _httpClient.GetFromJsonAsync<List<Product>>(_domainService.Domain() + "api/Products/");
+        return response;
     }
 
-    public Task<List<Product>> GetProductsByCategoryAsync(int categoryId, int skip, int take)
+    public async Task<Product> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        Product? response = await _httpClient.GetFromJsonAsync<Product>(_domainService.Domain() + $"api/Products/{id}");
+        return response;
     }
 
-    public Task<Product> UpdateAsync(Product entity)
+    public async Task<List<Product>> GetProductsByCategoryAsync(int categoryId, int skip, int take)
     {
-        throw new NotImplementedException();
+        List<Product>? response = await _httpClient.GetFromJsonAsync<List<Product>>(_domainService.Domain() + $"api/Products/{categoryId}/{skip}/{take}");
+        return response;
+    }
+
+    public async Task<Product> UpdateAsync(Product entity)
+    {
+        HttpResponseMessage? response = await _httpClient.PutAsJsonAsync(_domainService.Domain() + "api/Products/", entity);
+        return await response.Content.ReadFromJsonAsync<Product>();
     }
 }

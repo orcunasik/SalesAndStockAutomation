@@ -1,37 +1,52 @@
-﻿using SalesAndStockAutomation.Models.Entities;
+﻿using SalesAndStockAutomation.Configurations;
+using SalesAndStockAutomation.Models.Entities;
 using SalesAndStockAutomation.Services.Abstracts;
+using System.Net.Http.Json;
 
 namespace SalesAndStockAutomation.Services.Concretes;
 
 public class CustomerService : ICustomerService
 {
-    public Task<Customer> AddAsync(Customer entity)
+    private IDomainService _domainService;
+    private HttpClient _httpClient;
+
+    public CustomerService(IDomainService domainService, HttpClient httpClient)
     {
-        throw new NotImplementedException();
+        _domainService = domainService;
+        _httpClient = httpClient;
+    }
+    public async Task<Customer> AddAsync(Customer entity)
+    {
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_domainService.Domain() + "api/Customers/", entity);
+        return await response.Content.ReadFromJsonAsync<Customer>();
     }
 
-    public void Delete(Customer entity)
+    public async void Delete(int id)
     {
-        throw new NotImplementedException();
+        await _httpClient.DeleteAsync(_domainService.Domain() + $"api/Customers/{id}");
     }
 
-    public Task<List<Customer>> GetAllAsync()
+    public async Task<List<Customer>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        List<Customer>? response = await _httpClient.GetFromJsonAsync<List<Customer>>(_domainService.Domain() + "api/Customers/");
+        return response;
     }
 
-    public Task<Customer> GetByIdAsync(int id)
+    public async Task<Customer> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        Customer? response = await _httpClient.GetFromJsonAsync<Customer>(_domainService.Domain() + $"api/Customers/{id}");
+        return response;
     }
 
-    public Task<List<Customer>> PagingAsync(int skip, int take)
+    public async Task<List<Customer>> PagingAsync(int skip, int take)
     {
-        throw new NotImplementedException();
+        List<Customer>? response = await _httpClient.GetFromJsonAsync<List<Customer>>(_domainService.Domain() + $"api/Customers/{skip}/{take}");
+        return response;
     }
 
-    public Task<Customer> UpdateAsync(Customer entity)
+    public async Task<Customer> UpdateAsync(Customer entity)
     {
-        throw new NotImplementedException();
+        HttpResponseMessage? response = await _httpClient.PutAsJsonAsync(_domainService.Domain() + "api/Customers/", entity);
+        return await response.Content.ReadFromJsonAsync<Customer>();
     }
 }

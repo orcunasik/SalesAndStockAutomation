@@ -1,32 +1,47 @@
-﻿using SalesAndStockAutomation.Models.Entities;
+﻿using SalesAndStockAutomation.Configurations;
+using SalesAndStockAutomation.Models.Entities;
 using SalesAndStockAutomation.Services.Abstracts;
+using System.Net.Http.Json;
 
 namespace SalesAndStockAutomation.Services.Concretes;
 
 public class EmployeeService : IEmployeeService
 {
-    public Task<Employee> AddAsync(Employee entity)
+    private IDomainService _domainService;
+    private HttpClient _httpClient;
+
+    public EmployeeService(IDomainService domainService, HttpClient httpClient)
     {
-        throw new NotImplementedException();
+        _domainService = domainService;
+        _httpClient = httpClient;
     }
 
-    public void Delete(Employee entity)
+    public async Task<Employee> AddAsync(Employee entity)
     {
-        throw new NotImplementedException();
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_domainService.Domain() + "api/Employees/", entity);
+        return await response.Content.ReadFromJsonAsync<Employee>();
     }
 
-    public Task<List<Employee>> GetAllAsync()
+    public async void Delete(int id)
     {
-        throw new NotImplementedException();
+        await _httpClient.DeleteAsync(_domainService.Domain() + $"api/Employees/{id}");
     }
 
-    public Task<Employee> GetByIdAsync(int id)
+    public async Task<List<Employee>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        List<Employee>? response = await _httpClient.GetFromJsonAsync<List<Employee>>(_domainService.Domain() + "api/Employees/");
+        return response;
     }
 
-    public Task<Employee> UpdateAsync(Employee entity)
+    public async Task<Employee> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        Employee? response = await _httpClient.GetFromJsonAsync<Employee>(_domainService.Domain() + $"api/Employees/{id}");
+        return response;
+    }
+
+    public async Task<Employee> UpdateAsync(Employee entity)
+    {
+        HttpResponseMessage? response = await _httpClient.PutAsJsonAsync(_domainService.Domain() + "api/Employees/", entity);
+        return await response.Content.ReadFromJsonAsync<Employee>();
     }
 }
