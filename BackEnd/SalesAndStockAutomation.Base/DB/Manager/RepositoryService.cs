@@ -19,6 +19,7 @@ public class RepositoryService<T> : IRepositoryService<T> where T : class, IEnti
         using (var session = _nHibernateHelper.OpenSession())
         {
             session.Save(entity);
+            session.Flush();
             return entity;
         }
     }
