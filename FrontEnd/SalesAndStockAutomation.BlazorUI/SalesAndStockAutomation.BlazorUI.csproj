@@ -21,4 +21,8 @@
     <PackageReference Include="Radzen.Blazor" Version="4.19.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SalesAndStockAutomation.Services\SalesAndStockAutomation.Services.csproj" />
+  </ItemGroup>
+
 </Project>
