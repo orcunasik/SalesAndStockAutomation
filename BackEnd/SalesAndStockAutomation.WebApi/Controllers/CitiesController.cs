@@ -53,17 +53,18 @@ public class CitiesController : ControllerBase
         return Ok(updatedCity);
     }
 
-    [HttpDelete]
-    public IActionResult Delete(City city)
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
     {
+        City city = _cityService.GetById(id);
         _cityService.Delete(city);
         return Ok("Şehir Başarı ile Silindi");
     }
 
-    //[HttpPost]
-    //public IActionResult Delete(List<City> cities)
-    //{
-    //    _cityService.MultiDelete(cities);
-    //    return Ok("Şehirler Başarı ile Silindi");
-    //}
+    [HttpDelete]
+    public IActionResult Delete(List<City> cities)
+    {
+        _cityService.MultiDelete(cities);
+        return Ok("Şehirler Başarı ile Silindi");
+    }
 }
