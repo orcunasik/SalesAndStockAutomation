@@ -7,9 +7,10 @@ namespace SalesAndStockAutomation.WebApi.Controllers;
 [ApiController]
 public class ErrorsController : ControllerBase
 {
-    //public IActionResult Error()
-    //{
-    //    IExceptionHandlerFeature context = HttpContext.Features.Get<IExceptionHandlerFeature>();
-    //    return BadRequest(context.Error.Message);
-    //}
+    [HttpGet("errors")]
+    public IActionResult Error()
+    {
+        IExceptionHandlerFeature context = HttpContext.Features.Get<IExceptionHandlerFeature>();
+        return BadRequest(context.Error.Message);
+    }
 }
