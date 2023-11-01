@@ -15,6 +15,13 @@ public class CategoriesController : ControllerBase
         _categoryService = categoryService;
     }
 
+    [HttpGet]
+    public IActionResult Get()
+    {
+        List<Category> categories = _categoryService.GetAll();
+        return Ok(categories);
+    }
+
     [HttpGet("{skip}/{take}")]
     public IActionResult Get(int skip, int take)
     {
@@ -45,9 +52,10 @@ public class CategoriesController : ControllerBase
         return Ok(updatedCategory);
     }
 
-    [HttpDelete]
-    public IActionResult Delete(Category category)
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
     {
+        Category category = _categoryService.GetById(id);
         _categoryService.Delete(category);
         return Ok("Kategori Başarılı ile Silindi");
     }
