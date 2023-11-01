@@ -9,6 +9,6 @@ public interface ICityService
     Task<City> GetByIdAsync(int id);
     Task<City> AddAsync(City entity);
     Task<City> UpdateAsync(City entity);
-    void Delete(City entity);
+    void Delete(int id);
     void MultiDelete(List<City> entities);
 }

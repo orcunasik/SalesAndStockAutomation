@@ -9,5 +9,5 @@ public interface IProductService
     Task<Product> GetByIdAsync(int id);
     Task<Product> AddAsync(Product entity);
     Task<Product> UpdateAsync(Product entity);
-    void Delete(Product entity);
+    void Delete(int id);
 }

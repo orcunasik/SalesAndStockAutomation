@@ -9,5 +9,5 @@ public interface IUserAuthorityService
     Task<UserAuthority> GetByIdAsync(int id);
     Task<UserAuthority> AddAsync(UserAuthority entity);
     Task<UserAuthority> UpdateAsync(UserAuthority entity);
-    void Delete(UserAuthority entity);
+    void Delete(int id);
 }

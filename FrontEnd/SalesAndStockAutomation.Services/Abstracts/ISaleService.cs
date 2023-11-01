@@ -9,5 +9,5 @@ public interface ISaleService
     Task<Sale> GetByIdAsync(int id);
     Task<Sale> AddAsync(Sale entity);
     Task<Sale> UpdateAsync(Sale entity);
-    void Delete(Sale entity);
+    void Delete(int id);
 }

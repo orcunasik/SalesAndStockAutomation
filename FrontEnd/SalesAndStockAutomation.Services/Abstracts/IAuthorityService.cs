@@ -8,5 +8,5 @@ public interface IAuthorityService
     Task<Authority> GetAuthorityAsync(int  id);
     Task<Authority> AddAsync(Authority entity);
     Task<Authority> UpdateAsync(Authority entity);
-    void Delete(Authority entity);
+    void Delete(int id);
 }

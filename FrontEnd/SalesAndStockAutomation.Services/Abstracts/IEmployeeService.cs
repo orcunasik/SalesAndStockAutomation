@@ -8,5 +8,5 @@ public interface IEmployeeService
     Task<Employee> GetByIdAsync(int id);
     Task<Employee> AddAsync(Employee entity);
     Task<Employee> UpdateAsync(Employee entity);
-    void Delete(Employee entity);
+    void Delete(int id);
 }

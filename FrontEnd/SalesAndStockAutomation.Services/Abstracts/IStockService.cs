@@ -9,5 +9,5 @@ public interface IStockService
     Task<Stock> GetByIdAsync(int id);
     Task<Stock> AddAsync(Stock entity);
     Task<Stock> UpdateAsync(Stock entity);
-    void Delete(Stock entity);
+    void Delete(int id);
 }
