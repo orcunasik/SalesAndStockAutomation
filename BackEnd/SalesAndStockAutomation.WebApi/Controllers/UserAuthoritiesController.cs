@@ -52,9 +52,10 @@ public class UserAuthoritiesController : ControllerBase
         return Ok(updatedUserAuthority);
     }
 
-    [HttpDelete]
-    public IActionResult Delete(UserAuthority userAuthority)
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
     {
+        UserAuthority userAuthority = _userAuthorityService.GetById(id);
         _userAuthorityService.Delete(userAuthority);
         return Ok("Kullanıcı Yetkisi Başarıyla Silindi");
     }

@@ -51,10 +51,11 @@ public class SalesController : ControllerBase
         Sale updatedSale = _saleService.Update(sale);
         return Ok(updatedSale);
     }
-    
-    [HttpDelete]
-    public IActionResult Delete(Sale sale)
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
     {
+        Sale sale = _saleService.GetById(id);
         _saleService.Delete(sale);
         return Ok("Satış Başarı ile Silindi");
     }

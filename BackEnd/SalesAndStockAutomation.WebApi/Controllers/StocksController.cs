@@ -51,10 +51,11 @@ public class StocksController : ControllerBase
         Stock updatedStock = _stockService.Update(stock);
         return Ok(updatedStock);
     }
-    
-    [HttpDelete]
-    public IActionResult Delete(Stock stock)
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
     {
+        Stock stock = _stockService.GetById(id);
         _stockService.Delete(stock);
         return Ok("Stok Başarı ile Silindi");
     }

@@ -52,9 +52,10 @@ public class CustomersController : ControllerBase
         return Ok(updatedCustomer);
     }
 
-    [HttpDelete]
-    public IActionResult Delete(Customer customer)
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
     {
+        Customer customer = _customerService.GetById(id);
         _customerService.Delete(customer);
         return Ok("Müşteri Bilgisi Başarı ile Silindi");
     }

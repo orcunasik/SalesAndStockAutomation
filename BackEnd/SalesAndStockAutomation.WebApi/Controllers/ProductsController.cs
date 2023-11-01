@@ -52,9 +52,10 @@ public class ProductsController : ControllerBase
         return Ok(updatedaProduct);
     }
 
-    [HttpDelete]
-    public IActionResult Delete(Product product)
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
     {
+        Product product = _productService.GetById(id);
         _productService.Delete(product);
         return Ok("Ürün Başarı ile Silindi");
     }

@@ -45,9 +45,10 @@ public class AuthoritiesController : ControllerBase
         return Ok(updatedAuthority);
     }
 
-    [HttpDelete]
-    public IActionResult Delete(Authority authority)
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
     {
+        Authority authority = _authorityService.GetAuthority(id);
         _authorityService.Delete(authority);
         return Ok("Yetki Başarılı ile Silindi");
     }

@@ -45,9 +45,10 @@ public class EmployeesController : ControllerBase
         return Ok(updatedEmployee);
     }
 
-    [HttpDelete]
-    public IActionResult Delete(Employee employee)
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
     {
+        Employee employee = _employeeService.GetById(id);
         _employeeService.Delete(employee);
         return Ok("Personel Bilgisi Başarı ile Silindi");
     }
