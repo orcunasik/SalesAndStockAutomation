@@ -18,36 +18,36 @@ public class CategoryService : ICategoryService
 
     public async Task<Category> AddAsync(Category entity)
     {
-        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_domainService.Domain()+"/api/Categories/", entity);
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_domainService.Domain()+"api/Categories/", entity);
         return await response.Content.ReadFromJsonAsync<Category>();
     }
 
     public async void Delete(int id)
     {
-        await _httpClient.DeleteAsync(_domainService.Domain() + $"/api/Categories/{id}");
+        await _httpClient.DeleteAsync(_domainService.Domain() + $"api/Categories/{id}");
     }
 
     public async Task<List<Category>> GetAllAsync()
     {
-        var result = await _httpClient.GetFromJsonAsync<List<Category>>(_domainService.Domain() + "/api/Categories/");
-        return result;
+        List<Category>? response = await _httpClient.GetFromJsonAsync<List<Category>>(_domainService.Domain() + "api/Categories/");
+        return response;
     }
 
     public async Task<Category> GetByIdAsync(int id)
     {
-        var result = await _httpClient.GetFromJsonAsync<Category>(_domainService.Domain() + $"/api/Categories/{id}");
-        return result;
+        Category? response = await _httpClient.GetFromJsonAsync<Category>(_domainService.Domain() + $"api/Categories/{id}");
+        return response;
     }
 
     public async Task<List<Category>> PagingAsync(int skip, int take)
     {
-        var result = await _httpClient.GetFromJsonAsync<List<Category>>(_domainService.Domain() + $"/api/Categories/{skip}/{take}");
-        return result;
+        List<Category>? response = await _httpClient.GetFromJsonAsync<List<Category>>(_domainService.Domain() + $"api/Categories/{skip}/{take}");
+        return response;
     }
 
     public async Task<Category> UpdateAsync(Category entity)
     {
-        HttpResponseMessage response = await _httpClient.PutAsJsonAsync(_domainService.Domain() + "/api/Categories/", entity);
+        HttpResponseMessage? response = await _httpClient.PutAsJsonAsync(_domainService.Domain() + "api/Categories/", entity);
         return await response.Content.ReadFromJsonAsync<Category>();
     }
 }
