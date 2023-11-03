@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesAndStockAutomation.Mod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesAndStockAutomation.Services", "FrontEnd\SalesAndStockAutomation.Services\SalesAndStockAutomation.Services.csproj", "{24F8B511-6D05-4303-86FC-550E6CDD882D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesAndStockAutomation.Configurations", "FrontEnd\SalesAndStockAutomation.Configurations\SalesAndStockAutomation.Configurations.csproj", "{4B32788F-E1A1-4EF0-B077-4B73F70B7663}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesAndStockAutomation.Configurations", "FrontEnd\SalesAndStockAutomation.Configurations\SalesAndStockAutomation.Configurations.csproj", "{4B32788F-E1A1-4EF0-B077-4B73F70B7663}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
