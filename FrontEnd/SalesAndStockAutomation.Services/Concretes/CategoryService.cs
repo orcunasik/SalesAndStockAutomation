@@ -22,9 +22,10 @@ public class CategoryService : ICategoryService
         return await response.Content.ReadFromJsonAsync<Category>();
     }
 
-    public async void Delete(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        await _httpClient.DeleteAsync(_domainService.Domain() + $"api/Categories/{id}");
+        HttpResponseMessage response = await _httpClient.DeleteAsync(_domainService.Domain() + $"api/Categories/{id}");
+        return response.IsSuccessStatusCode;
     }
 
     public async Task<List<Category>> GetAllAsync()
