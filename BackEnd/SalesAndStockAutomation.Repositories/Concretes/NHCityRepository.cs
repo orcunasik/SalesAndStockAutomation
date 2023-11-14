@@ -13,6 +13,18 @@ public class NHCityRepository : RepositoryService<City>, ICityRepository
         _nHibernateHelper = nHibernateHelper;
     }
 
+    public List<City> GetCities(int skip, int take)
+    {
+        using (var session = _nHibernateHelper.OpenSession())
+        {
+            List<City> cities = session.Query<City>()
+                .Where(c => c.ParentId == 0)
+                .OrderBy(c => c.Name)
+                .Skip(skip).Take(take).ToList();
+            return cities;
+        }
+    }
+
     public List<City> GetCityByParentId(int parentId, int skip, int take)
     {
         using (var session = _nHibernateHelper.OpenSession())
@@ -22,6 +34,18 @@ public class NHCityRepository : RepositoryService<City>, ICityRepository
                 .OrderBy(c => c.Name)
                 .Skip(skip).Take(take).ToList();
             return cities;
+        }
+    }
+
+    public bool IsThereATerritory(int parentId)
+    {
+        using (var session = _nHibernateHelper.OpenSession())
+        {
+            int district = session.Query<City>()
+                .Where(c => c.ParentId == parentId).Count();
+            if(district > 0)
+                return true;
+            return false;
         }
     }
 
