@@ -1,5 +1,4 @@
-﻿using FluentNHibernate.Testing.Values;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SalesAndStockAutomation.Entities.Entities;
 using SalesAndStockAutomation.Services.Abstracts;
 
@@ -27,9 +26,23 @@ public class CitiesController : ControllerBase
     public IActionResult Get(int id)
     {
         City city = _cityService.GetById(id);
-        if(city is not null)
+        if (city is not null)
             return Ok(city);
         return NoContent();
+    }
+
+    [HttpGet("isThereATerritory/{parentId}")]
+    public IActionResult IsThereATerritory(int parentId)
+    {
+        bool result = _cityService.IsThereATerritory(parentId);
+        return Ok(result);
+    }
+
+    [HttpGet("{skip}/{take}")]
+    public IActionResult Get(int skip, int take)
+    {
+        List<City> cities = _cityService.GetCityList(skip, take);
+        return Ok(cities);
     }
 
     [HttpGet("{parentId}/{skip}/{take}")]
@@ -56,9 +69,18 @@ public class CitiesController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        City city = _cityService.GetById(id);
-        _cityService.Delete(city);
-        return Ok("Şehir Başarı ile Silindi");
+        bool isThereATerritory = _cityService.IsThereATerritory(id);
+        if(isThereATerritory)
+        {
+            return BadRequest("Silme İşlemi Başarısız!Bu bölgenin altında veriler mevcut!!");
+        }
+        else
+        {
+            City city = _cityService.GetById(id);
+            _cityService.Delete(city);
+            return Ok("Şehir Başarı ile Silindi");
+        }
+        
     }
 
     [HttpDelete]
