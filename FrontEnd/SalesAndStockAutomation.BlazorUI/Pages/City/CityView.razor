@@ -1,0 +1,123 @@
+﻿@page "/City"
+@inject ICityService service;
+@inject IToastService toast;
+
+<style>
+    .rz-grid-table {
+        width: unset;
+    }
+</style>
+
+@if (cities is null)
+{
+    <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Primary" Value="100" Mode="ProgressBarMode.Indeterminate" />
+}
+else
+{
+    <RadzenCard>
+        <RadzenButton Text="Yeni Şehir" Icon="add_circle_outline" Click="@InsertRow" ButtonStyle="ButtonStyle.Primary" class="mt-2 mb-4" Disabled="@(addedCity != null || updatedCity != null)" />
+
+        <RadzenDataGrid @ref="grid" Data="cities" PageSize="PageSize" TItem="City" AllowFiltering="true" AllowPaging="true" AllowAlternatingRows="false" AllowSorting="true" Density="Density.Compact" EditMode="DataGridEditMode.Single" RowCreate="@OnCreateRow" RowUpdate="@OnUpdateRow" Page="@Reset" Sort="@Reset" Filter="@Reset">
+            <Template Context="context">
+                <DistrictView ButtonName="Yeni İlçe" ParentId="@context.Id" IsOpenStatus="true" ButtonStatus="false" />
+            </Template>
+            <Columns>
+                <RadzenDataGridColumn TItem="City" Title="Id" Property="Id" Sortable="true" Frozen="true" Width="100px" />
+                <RadzenDataGridColumn TItem="City" Title="Şehir" Property="Name" Sortable="true">
+                    <Template Context="context">
+                        @context.Name
+                    </Template>
+                    <EditTemplate Context="context">
+                        <RadzenTextBox @bind-Value="context.Name" Style="width:100%" Placeholder="Şehir" Name="Name" />
+                        <br />
+                        <RadzenRequiredValidator Popup="true" Component="Name" Text="Şehir Bilgisi Zorunludur!" />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="City" Context="context" Sortable="false" Frozen="true" FrozenPosition="FrozenColumnPosition.Right" Width="350px">
+                    <Template Context="context">
+                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Click="@(args => EditRow(context))" Variant="Variant.Flat" Size="ButtonSize.Medium" @onclick:stopPropagation="true" />
+                        <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Click="@(args=>DeleteRow(context))" Variant="Variant.Flat" class="my-1 ms-1" Shade="Shade.Lighter" Size="ButtonSize.Medium" @onclick:stopPropagation="true" />
+                    </Template>
+                    <EditTemplate Context="context">
+                        <RadzenButton Icon="save" ButtonStyle="ButtonStyle.Success" Click="@(args => SaveRow(context))" Variant="Variant.Flat" Size="ButtonSize.Medium" />
+                        <RadzenButton Icon="cancel" ButtonStyle="ButtonStyle.Info" Click="@(args => CancelEdit(context))" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </RadzenCard>
+}
+
+@code {
+    IList<City>? cities;
+    City? addedCity;
+    City? updatedCity;
+    public int PageSize { get; set; } = 5;
+    RadzenDataGrid<City> grid;
+
+    void Reset()
+    {
+        addedCity = null;
+        updatedCity = null;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        cities = await service.GetCityListAsync(0, PageSize);
+    }
+
+    async Task InsertRow()
+    {
+        addedCity = new City();
+        await grid.InsertRow(addedCity);
+    }
+
+    async void OnCreateRow(City entity)
+    {
+        City city = await service.AddAsync(entity);
+        cities = await service.GetCityListAsync(0, PageSize);
+        addedCity = null;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    void CancelEdit(City entity)
+    {
+        Reset();
+        grid.CancelEditRow(entity);
+    }
+
+    async Task SaveRow(City entity)
+    {
+        await grid.UpdateRow(entity);
+    }
+
+    async Task EditRow(City entity)
+    {
+        updatedCity = entity;
+        await grid.EditRow(entity);
+    }
+
+    async void OnUpdateRow(City entity)
+    {
+        Reset();
+        City city = await service.UpdateAsync(entity);
+        cities = await service.GetCityListAsync(0, PageSize);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    async Task DeleteRow(City entity)
+    {
+        Reset();
+        bool isDistrict = await service.IsThereATerritoryAsync(entity.Id);
+        if(isDistrict)
+        {
+            toast.ShowError("Bu Şehrin Altında İlçeler Mevcut,Bu Şehri Silemezsiniz!");
+        }
+        else
+        {
+            await service.DeleteAsync(entity.Id);
+            cities = await service.GetCityListAsync(0, PageSize);
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+}

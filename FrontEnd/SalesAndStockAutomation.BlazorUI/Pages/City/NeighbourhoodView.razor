@@ -1,0 +1,144 @@
+﻿@inject ICityService service;
+
+<style>
+    .rz-grid-table {
+        width: unset;
+    }
+</style>
+
+@if (neighbourhoods is null && districts is null)
+{
+    <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Primary" Value="100" Mode="ProgressBarMode.Indeterminate" />
+}
+else
+{
+    <RadzenCard>
+        @if(ButtonStatus)
+        {
+            <RadzenButton Text="@ButtonName" Icon="add_circle_outline" Click="@InsertRow" ButtonStyle="ButtonStyle.Warning" class="mt-2 mb-4" Disabled="@(addedCity != null || updatedCity != null)" />
+        }
+        else
+        {
+            <RadzenButton Text="@ButtonName" Icon="add_circle_outline" Click="@InsertRow" ButtonStyle="ButtonStyle.Light" class="mt-2 mb-4" Disabled="@(addedCity != null || updatedCity != null)" />
+        }
+
+        <RadzenDataGrid @ref="grid" Data="neighbourhoods" PageSize="PageSize" TItem="City" AllowFiltering="true" AllowPaging="true" AllowAlternatingRows="false" AllowSorting="true" Density="Density.Compact" EditMode="DataGridEditMode.Single" RowCreate="@OnCreateRow" RowUpdate="@OnUpdateRow" Page="@Reset" Sort="@Reset" Filter="@Reset">
+            <Columns>
+                <RadzenDataGridColumn TItem="City" Title="Id" Property="Id" Sortable="true" Frozen="true" Width="100px" />
+                <RadzenDataGridColumn TItem="City" Title="Mahalle" Property="Name" Sortable="true">
+                    <Template Context="context">
+                        @context.Name
+                    </Template>
+                    <EditTemplate Context="context">
+                        <RadzenTextBox @bind-Value="context.Name" Style="width:100%" Placeholder="Mahalle" Name="Name" />
+                        <br />
+                        <RadzenRequiredValidator Popup="true" Component="Name" Text="Mahalle Bilgisi Zorunludur!" />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="City" Title="İlçe" Property="ParentId" Sortable="true">
+                    <Template Context="context">
+                        @districts.FirstOrDefault().Name
+                    </Template>
+                    <EditTemplate Context="context">
+                        <RadzenDropDownDataGrid TValue="int" @bind-Value="ParentId" Data=@(districts) Style="width:100%" TextProperty="Name" ValueProperty="Id" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="Id" Title="Id" Width="100px"></RadzenDropDownDataGridColumn>
+                                <RadzenDropDownDataGridColumn Property="Name" Title="İlçe" Width="200px"></RadzenDropDownDataGridColumn>
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="City" Context="context" Sortable="false" Frozen="true" FrozenPosition="FrozenColumnPosition.Right" Width="350px">
+                    <Template Context="context">
+                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Click="@(args => EditRow(context))" Variant="Variant.Flat" Size="ButtonSize.Medium" @onclick:stopPropagation="true" />
+                        <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Click="@(args=>DeleteRow(context))" Variant="Variant.Flat" class="my-1 ms-1" Shade="Shade.Lighter" Size="ButtonSize.Medium" @onclick:stopPropagation="true" />
+                    </Template>
+                    <EditTemplate Context="context">
+                        <RadzenButton Icon="save" ButtonStyle="ButtonStyle.Success" Click="@(args => SaveRow(context))" Variant="Variant.Flat" Size="ButtonSize.Medium" />
+                        <RadzenButton Icon="cancel" ButtonStyle="ButtonStyle.Info" Click="@(args => CancelEdit(context))" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </RadzenCard>
+}
+
+@code {
+    IList<City>? neighbourhoods;
+    IList<City>? districts;
+    City? addedCity;
+    City? updatedCity;
+    RadzenDataGrid<City> grid;
+
+    public int PageSize { get; set; } = 5;
+    [Parameter]
+    public int ParentId { get; set; }
+    [Parameter]
+    public string ButtonName { get; set; }
+    [Parameter]
+    public bool ButtonStatus { get; set; }
+    [Parameter]
+    public bool IsOpenStatus { get; set; }
+
+    void Reset()
+    {
+        addedCity = null;
+        updatedCity = null;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        neighbourhoods = await service.GetCityByParentAsync(ParentId, 0, PageSize);
+        City district = await service.GetByIdAsync(ParentId);
+        districts = new List<City>() { district };
+    }
+
+    async Task InsertRow()
+    {
+        addedCity = new City();
+        await grid.InsertRow(addedCity);
+    }
+
+    async void OnCreateRow(City entity)
+    {
+        entity.ParentId = ParentId;
+        City city = await service.AddAsync(entity);
+        neighbourhoods = await service.GetCityByParentAsync(ParentId, 0, PageSize);
+        addedCity = null;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    void CancelEdit(City entity)
+    {
+        Reset();
+        grid.CancelEditRow(entity);
+    }
+
+    async Task SaveRow(City entity)
+    {
+        await grid.UpdateRow(entity);
+    }
+
+    async Task EditRow(City entity)
+    {
+        updatedCity = entity;
+        await grid.EditRow(entity);
+    }
+
+    async void OnUpdateRow(City entity)
+    {
+        Reset();
+        entity.ParentId = ParentId;
+        City city = await service.UpdateAsync(entity);
+        neighbourhoods = await service.GetCityByParentAsync(ParentId, 0, PageSize);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    async Task DeleteRow(City entity)
+    {
+        Reset();
+        await service.DeleteAsync(entity.Id);
+        neighbourhoods = await service.GetCityByParentAsync(ParentId, 0, PageSize);
+        await InvokeAsync(StateHasChanged);
+    }
+}

@@ -29,7 +29,6 @@
     <Folder Include="Pages\Authority\" />
     <Folder Include="Pages\Customer\" />
     <Folder Include="Pages\Employee\" />
-    <Folder Include="Pages\City\" />
     <Folder Include="Pages\Product\" />
     <Folder Include="Pages\Stock\" />
     <Folder Include="Pages\Sale\" />
