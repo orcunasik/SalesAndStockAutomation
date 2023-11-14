@@ -21,9 +21,10 @@ public class CityService : ICityService
         return await response.Content.ReadFromJsonAsync<City>();
     }
 
-    public async void Delete(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        await _httpClient.DeleteAsync(_domainService.Domain() + $"api/Cities/{id}");
+        HttpResponseMessage response = await _httpClient.DeleteAsync(_domainService.Domain() + $"api/Cities/{id}");
+        return response.IsSuccessStatusCode;
     }
 
     public async Task<List<City>> GetAllAsync()
@@ -42,6 +43,17 @@ public class CityService : ICityService
     {
         List<City>? response = await _httpClient.GetFromJsonAsync<List<City>>(_domainService.Domain() + $"api/Cities/{parentId}/{skip}/{take}");
         return response;
+    }
+
+    public async Task<List<City>> GetCityListAsync(int skip, int take)
+    {
+        List<City>? response = await _httpClient.GetFromJsonAsync<List<City>>(_domainService.Domain() + $"api/Cities/{skip}/{take}");
+        return response;
+    }
+
+    public async Task<bool> IsThereATerritoryAsync(int parentId)
+    {
+        return await _httpClient.GetFromJsonAsync<bool>(_domainService.Domain() + $"api/Cities/isThereATerritory/{parentId}");
     }
 
     public async void MultiDelete(List<City> entities)
