@@ -33,6 +33,11 @@ public class CityService : ICityService
         return _repository.Get(c => c.Id == id);
     }
 
+    public List<City> GetCityList(int skip, int take)
+    {
+        return _repository.GetCities(skip, take);
+    }
+
     public List<City> GetCityByParent(int parentId, int skip, int take)
     {
         return _repository.GetCityByParentId(parentId, skip, take);
@@ -46,5 +51,10 @@ public class CityService : ICityService
     public City Update(City entity)
     {
         return _repository.Update(entity);
+    }
+
+    public bool IsThereATerritory(int parentId)
+    {
+        return _repository.IsThereATerritory(parentId);
     }
 }
